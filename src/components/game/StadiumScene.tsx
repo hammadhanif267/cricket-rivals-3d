@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { Environment, PerspectiveCamera, Sparkles } from "@react-three/drei";
+import { Sparkles } from "@react-three/drei";
 import * as THREE from "three";
 import { type ReactNode } from "react";
 
@@ -16,64 +16,61 @@ type StadiumSceneProps = {
 function CricketField() {
   return (
     <group>
-      {/* Main field */}
-
+      {/* Outer grass */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, -0.06, 0]}
+        position={[0, -0.12, 0]}
         receiveShadow
       >
-        <circleGeometry args={[14.5, 96]} />
-
-        <meshStandardMaterial color="#12391e" roughness={0.96} />
+        <circleGeometry args={[15.5, 128]} />
+        <meshStandardMaterial color="#0b3218" roughness={0.96} />
       </mesh>
 
-      {/* Inner grass */}
-
+      {/* Main outfield */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, -0.025, 0]}
+        position={[0, -0.055, 0]}
         receiveShadow
       >
-        <circleGeometry args={[11.7, 96]} />
-
-        <meshStandardMaterial color="#1e5b2b" roughness={0.91} />
+        <circleGeometry args={[14.25, 128]} />
+        <meshStandardMaterial color="#185b29" roughness={0.92} />
       </mesh>
 
-      {/* Outfield mowing ring */}
-
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.018, 0]}>
-        <ringGeometry args={[8.8, 11.7, 96]} />
-
-        <meshStandardMaterial color="#225f2e" roughness={0.94} />
+      {/* Mowing rings */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.035, 0]}>
+        <ringGeometry args={[9.2, 14.25, 128]} />
+        <meshStandardMaterial color="#1c662e" roughness={0.93} />
       </mesh>
 
-      {/* Pitch base */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.025, 0]}>
+        <ringGeometry args={[5.8, 9.2, 128]} />
+        <meshStandardMaterial color="#185a29" roughness={0.93} />
+      </mesh>
 
+      {/* Pitch */}
       <mesh position={[0, 0.02, 0]} receiveShadow>
-        <boxGeometry args={[3.15, 0.09, 20]} />
+        <boxGeometry args={[3.2, 0.1, 20]} />
+        <meshStandardMaterial color="#a98451" roughness={0.88} />
+      </mesh>
 
-        <meshStandardMaterial color="#b6945d" roughness={0.9} />
+      <mesh position={[0, 0.078, 0]} receiveShadow>
+        <boxGeometry args={[2.72, 0.025, 19.65]} />
+        <meshStandardMaterial color="#c5a66e" roughness={0.82} />
       </mesh>
 
       {/* Pitch center */}
-
-      <mesh position={[0, 0.075, 0]} receiveShadow>
-        <boxGeometry args={[2.68, 0.025, 19.6]} />
-
-        <meshStandardMaterial color="#c9aa70" roughness={0.84} />
+      <mesh position={[0, 0.094, 0]}>
+        <boxGeometry args={[1.9, 0.012, 19.2]} />
+        <meshStandardMaterial color="#d3b77e" roughness={0.8} />
       </mesh>
 
-      {/* Pitch subtle center strip */}
-
-      <mesh position={[0, 0.092, 0]}>
-        <boxGeometry args={[1.85, 0.012, 19.2]} />
-
-        <meshStandardMaterial color="#d1b47c" roughness={0.82} />
+      {/* Pitch wear */}
+      <mesh position={[0, 0.101, 0]}>
+        <boxGeometry args={[1.1, 0.008, 18.6]} />
+        <meshStandardMaterial color="#c4a66c" roughness={0.88} />
       </mesh>
 
       {/* Creases */}
-
       <PitchLine position={[0, 0.115, 7.45]} />
       <PitchLine position={[0, 0.115, -7.45]} />
 
@@ -100,8 +97,7 @@ function PitchLine({
   return (
     <mesh position={position}>
       <boxGeometry args={[width, 0.018, length]} />
-
-      <meshStandardMaterial color="#f5ead2" roughness={0.72} />
+      <meshStandardMaterial color="#f5ead2" roughness={0.7} />
     </mesh>
   );
 }
@@ -114,56 +110,18 @@ function BoundaryRope() {
   return (
     <group>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.08, 0]}>
-        <torusGeometry args={[13.85, 0.075, 10, 128]} />
-
-        <meshStandardMaterial
-          color="#deded6"
-          roughness={0.35}
-          metalness={0.12}
-        />
+        <torusGeometry args={[13.9, 0.075, 10, 160]} />
+        <meshStandardMaterial color="#e6e6df" roughness={0.3} metalness={0.1} />
       </mesh>
 
-      {/* Green LED-style inner rope */}
-
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.092, 0]}>
-        <torusGeometry args={[13.65, 0.024, 8, 128]} />
-
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.095, 0]}>
+        <torusGeometry args={[13.65, 0.026, 8, 160]} />
         <meshStandardMaterial
           color="#9cff00"
-          emissive="#6a9d00"
-          emissiveIntensity={0.5}
-          roughness={0.35}
+          emissive="#5f9000"
+          emissiveIntensity={0.65}
+          roughness={0.3}
         />
-      </mesh>
-    </group>
-  );
-}
-
-/* =========================================================
-   WICKET
-========================================================= */
-
-function Wicket({ position }: { position: [number, number, number] }) {
-  return (
-    <group position={position}>
-      {[-0.19, 0, 0.19].map((x) => (
-        <mesh key={x} castShadow position={[x, 0.66, 0]}>
-          <cylinderGeometry args={[0.045, 0.052, 1.32, 12]} />
-
-          <meshStandardMaterial color="#ead5a2" roughness={0.58} />
-        </mesh>
-      ))}
-
-      <mesh castShadow position={[-0.095, 1.33, 0]}>
-        <boxGeometry args={[0.22, 0.055, 0.07]} />
-
-        <meshStandardMaterial color="#f0dcae" roughness={0.5} />
-      </mesh>
-
-      <mesh castShadow position={[0.095, 1.33, 0]}>
-        <boxGeometry args={[0.22, 0.055, 0.07]} />
-
-        <meshStandardMaterial color="#f0dcae" roughness={0.5} />
       </mesh>
     </group>
   );
@@ -182,64 +140,63 @@ function StadiumStand({
   rotation?: [number, number, number];
   scale?: number;
 }) {
+  const crowdColors = ["#4b5550", "#303a35", "#5a625d", "#252e2a", "#39433e"];
+
   return (
     <group position={position} rotation={rotation} scale={scale}>
-      {/* Lower structure */}
-
+      {/* Main stand body */}
       <mesh castShadow>
-        <boxGeometry args={[18, 2.4, 3]} />
-
+        <boxGeometry args={[19, 2.7, 3.6]} />
         <meshStandardMaterial
           color="#0b1210"
-          roughness={0.84}
-          metalness={0.15}
+          roughness={0.82}
+          metalness={0.18}
         />
       </mesh>
 
       {/* Seating levels */}
-
-      <mesh position={[0, 1.45, -0.1]}>
-        <boxGeometry args={[18.4, 0.2, 3.2]} />
-
-        <meshStandardMaterial color="#202a26" roughness={0.72} />
+      <mesh position={[0, 1.55, -0.1]}>
+        <boxGeometry args={[19.4, 0.22, 3.8]} />
+        <meshStandardMaterial color="#1c2722" roughness={0.7} />
       </mesh>
 
-      <mesh position={[0, 2.15, -0.2]}>
-        <boxGeometry args={[18.2, 0.18, 3]} />
-
-        <meshStandardMaterial color="#151e1b" roughness={0.75} />
+      <mesh position={[0, 2.25, -0.15]}>
+        <boxGeometry args={[19.2, 0.2, 3.55]} />
+        <meshStandardMaterial color="#141d19" roughness={0.72} />
       </mesh>
 
-      {/* Crowd blocks */}
+      {/* Crowd */}
+      {Array.from({ length: 25 }).map((_, index) => (
+        <mesh
+          key={index}
+          position={[-8.9 + index * 0.74, 1.0 + (index % 3) * 0.1, 1.25]}
+        >
+          <boxGeometry args={[0.32, 0.42 + (index % 2) * 0.1, 0.3]} />
+          <meshStandardMaterial
+            color={crowdColors[index % crowdColors.length]}
+            roughness={0.92}
+          />
+        </mesh>
+      ))}
 
-      {Array.from({ length: 22 }).map((_, index) => {
-        const crowdColors = ["#353d39", "#454d49", "#252d2a", "#59605c"];
-
-        return (
-          <mesh
-            key={index}
-            position={[-8.2 + index * 0.78, 1.05 + (index % 3) * 0.08, 1.1]}
-          >
-            <boxGeometry args={[0.38, 0.48 + (index % 2) * 0.08, 0.34]} />
-
-            <meshStandardMaterial
-              color={crowdColors[index % crowdColors.length]}
-              roughness={0.9}
-            />
-          </mesh>
-        );
-      })}
-
-      {/* Green accent band */}
-
-      <mesh position={[0, 2.42, 0.15]}>
-        <boxGeometry args={[18.5, 0.08, 3.1]} />
-
+      {/* Green stadium trim */}
+      <mesh position={[0, 2.48, 0.15]}>
+        <boxGeometry args={[19.5, 0.1, 3.7]} />
         <meshStandardMaterial
-          color="#17251c"
-          emissive="#182d1b"
-          emissiveIntensity={0.18}
-          roughness={0.75}
+          color="#15291b"
+          emissive="#163d1d"
+          emissiveIntensity={0.22}
+          roughness={0.72}
+        />
+      </mesh>
+
+      {/* Front railing */}
+      <mesh position={[0, 0.1, 1.88]}>
+        <boxGeometry args={[19, 0.12, 0.08]} />
+        <meshStandardMaterial
+          color="#56615b"
+          metalness={0.65}
+          roughness={0.38}
         />
       </mesh>
     </group>
@@ -247,80 +204,86 @@ function StadiumStand({
 }
 
 /* =========================================================
-   STADIUM LIGHT TOWERS
+   FLOODLIGHT TOWER
 ========================================================= */
 
 function StadiumLightTower({
   position,
+  rotation = 0,
 }: {
   position: [number, number, number];
+  rotation?: number;
 }) {
   return (
-    <group position={position}>
+    <group position={position} rotation={[0, rotation, 0]}>
       {/* Tower */}
-
       <mesh castShadow>
-        <cylinderGeometry args={[0.14, 0.2, 8.5, 10]} />
-
+        <cylinderGeometry args={[0.13, 0.22, 9, 10]} />
         <meshStandardMaterial
-          color="#272d2a"
-          metalness={0.72}
-          roughness={0.34}
+          color="#272f2b"
+          metalness={0.78}
+          roughness={0.32}
         />
       </mesh>
 
-      {/* Light panel */}
+      {/* Top support */}
+      <mesh position={[0, 4.35, 0]}>
+        <boxGeometry args={[2.5, 0.18, 0.5]} />
+        <meshStandardMaterial
+          color="#353c38"
+          metalness={0.65}
+          roughness={0.35}
+        />
+      </mesh>
 
-      <mesh position={[0, 4.45, 0]}>
-        <boxGeometry args={[2.1, 0.42, 0.45]} />
-
+      {/* Light bank */}
+      <mesh position={[0, 4.62, 0]}>
+        <boxGeometry args={[2.2, 0.5, 0.48]} />
         <meshStandardMaterial
           color="#e8eadf"
-          emissive="#fff6c9"
-          emissiveIntensity={2.2}
-          roughness={0.25}
+          emissive="#fff5ce"
+          emissiveIntensity={2.5}
+          roughness={0.2}
         />
       </mesh>
 
-      {/* Small glow */}
-
+      {/* Light source */}
       <pointLight
-        position={[0, 4.15, 0]}
-        intensity={42}
-        distance={27}
+        position={[0, 4.05, 0]}
+        intensity={22}
+        distance={28}
         decay={2}
-        color="#fff4d2"
-        castShadow
+        color="#fff2d0"
       />
     </group>
   );
 }
 
 /* =========================================================
-   STADIUM ROOF / RING
+   STADIUM ROOF
 ========================================================= */
 
-function StadiumRoofRing() {
+function StadiumRoof() {
   return (
     <group>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 8.2, 0]}>
-        <torusGeometry args={[17, 0.24, 10, 96]} />
-
+      {/* Main roof ring */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 8.5, 0]}>
+        <torusGeometry args={[17.2, 0.3, 12, 128]} />
         <meshStandardMaterial
           color="#101714"
-          roughness={0.72}
-          metalness={0.35}
+          roughness={0.68}
+          metalness={0.4}
         />
       </mesh>
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 8.08, 0]}>
-        <torusGeometry args={[16.4, 0.055, 8, 96]} />
-
+      {/* Green illuminated ring */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 8.35, 0]}>
+        <torusGeometry args={[16.55, 0.055, 8, 128]} />
         <meshStandardMaterial
           color="#9cff00"
-          emissive="#5f8f00"
-          emissiveIntensity={0.3}
-          roughness={0.4}
+          emissive="#6c9c00"
+          emissiveIntensity={0.4}
+          roughness={0.35}
         />
       </mesh>
     </group>
@@ -328,105 +291,114 @@ function StadiumRoofRing() {
 }
 
 /* =========================================================
-   ATMOSPHERE
+   STADIUM BACKGROUND
+========================================================= */
+
+function StadiumBackdrop() {
+  return (
+    <group>
+      {/* Dark sky */}
+      <mesh position={[0, 7, -25]}>
+        <planeGeometry args={[70, 30]} />
+        <meshBasicMaterial color="#020504" side={THREE.DoubleSide} />
+      </mesh>
+
+      {/* Horizon glow */}
+      <mesh position={[0, 4.5, -23]}>
+        <planeGeometry args={[48, 10]} />
+        <meshBasicMaterial
+          color="#18301e"
+          transparent
+          opacity={0.34}
+          depthWrite={false}
+        />
+      </mesh>
+
+      {/* Distant stadium glow */}
+      <mesh position={[0, 5.5, -21]}>
+        <planeGeometry args={[34, 6]} />
+        <meshBasicMaterial
+          color="#29482d"
+          transparent
+          opacity={0.16}
+          depthWrite={false}
+        />
+      </mesh>
+    </group>
+  );
+}
+
+/* =========================================================
+   STADIUM ATMOSPHERE
 ========================================================= */
 
 function StadiumAtmosphere() {
   return (
     <>
+      {/* Sky */}
       <color attach="background" args={["#020504"]} />
 
-      <fog attach="fog" args={["#020504", 19, 47]} />
+      <fog attach="fog" args={["#020504", 22, 55]} />
 
-      {/* Main ambient */}
+      {/* Base ambient */}
+      <ambientLight intensity={0.72} />
 
-      <ambientLight intensity={0.62} />
-
-      {/* Main stadium directional light */}
-
+      {/* Main directional stadium light */}
       <directionalLight
-        position={[7, 13, 5]}
-        intensity={2.35}
+        position={[8, 15, 7]}
+        intensity={2.8}
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
         shadow-camera-near={1}
-        shadow-camera-far={55}
-        shadow-camera-left={-22}
-        shadow-camera-right={22}
-        shadow-camera-top={22}
-        shadow-camera-bottom={-22}
+        shadow-camera-far={60}
+        shadow-camera-left={-25}
+        shadow-camera-right={25}
+        shadow-camera-top={25}
+        shadow-camera-bottom={-25}
+      />
+
+      {/* Front fill */}
+      <pointLight
+        position={[0, 5, 9]}
+        intensity={12}
+        distance={25}
+        decay={2}
+        color="#fff2d5"
       />
 
       {/* Green field fill */}
-
       <pointLight
-        position={[0, 7, 0]}
-        intensity={18}
-        distance={32}
-        color="#9cff00"
+        position={[0, 6, 0]}
+        intensity={8}
+        distance={28}
+        decay={2}
+        color="#8fd34b"
       />
 
-      {/* Warm player fill */}
-
+      {/* Side fill */}
       <pointLight
-        position={[2, 4, 5]}
-        intensity={9}
-        distance={17}
-        color="#fff1d0"
+        position={[-9, 6, 4]}
+        intensity={8}
+        distance={22}
+        decay={2}
+        color="#d9ead0"
       />
 
-      <Environment preset="night" />
-
+      {/* Small stadium particles */}
       <Sparkles
-        count={95}
-        scale={[28, 10, 28]}
-        size={1.05}
-        speed={0.12}
-        opacity={0.22}
+        count={70}
+        scale={[30, 12, 30]}
+        size={0.9}
+        speed={0.08}
+        opacity={0.18}
       />
     </>
   );
 }
 
 /* =========================================================
-   CINEMATIC BACKGROUND
-========================================================= */
-
-function StadiumBackdrop() {
-  return (
-    <group>
-      {/* Far background */}
-
-      <mesh position={[0, 5, -22]}>
-        <planeGeometry args={[55, 20]} />
-
-        <meshBasicMaterial
-          color="#020403"
-          transparent
-          opacity={0.9}
-          depthWrite={false}
-        />
-      </mesh>
-
-      {/* Stadium horizon glow */}
-
-      <mesh position={[0, 4, -20]}>
-        <planeGeometry args={[38, 8]} />
-
-        <meshBasicMaterial
-          color="#142519"
-          transparent
-          opacity={0.32}
-          depthWrite={false}
-        />
-      </mesh>
-    </group>
-  );
-}
-
-/* =========================================================
-   COMPLETE STADIUM CONTENT
+   STADIUM CONTENT
 ========================================================= */
 
 function StadiumContents({ children }: { children?: ReactNode }) {
@@ -437,45 +409,72 @@ function StadiumContents({ children }: { children?: ReactNode }) {
       <BoundaryRope />
 
       {/* Wickets */}
+      <StadiumWicket position={[0, 0, 7.55]} />
+      <StadiumWicket position={[0, 0, -7.55]} />
 
-      <Wicket position={[0, 0, 7.55]} />
-      <Wicket position={[0, 0, -7.55]} />
+      {/* Main stands */}
+      <StadiumStand position={[0, 1.5, -15.4]} />
 
-      {/* Stands */}
+      <StadiumStand position={[0, 1.5, 15.4]} rotation={[0, Math.PI, 0]} />
 
-      <StadiumStand position={[0, 1.5, -15.3]} rotation={[0, 0, 0]} />
-
-      <StadiumStand position={[0, 1.5, 15.3]} rotation={[0, Math.PI, 0]} />
-
+      {/* Side stands */}
       <StadiumStand
-        position={[-15.4, 1.5, 0]}
+        position={[-15.5, 1.5, 0]}
         rotation={[0, Math.PI / 2, 0]}
         scale={0.72}
       />
 
       <StadiumStand
-        position={[15.4, 1.5, 0]}
+        position={[15.5, 1.5, 0]}
         rotation={[0, -Math.PI / 2, 0]}
         scale={0.72}
       />
 
-      {/* Lighting */}
-
+      {/* Floodlights */}
       <StadiumLightTower position={[-11.5, 0, -10.5]} />
+
       <StadiumLightTower position={[11.5, 0, -10.5]} />
+
       <StadiumLightTower position={[-11.5, 0, 10.5]} />
+
       <StadiumLightTower position={[11.5, 0, 10.5]} />
 
-      <StadiumRoofRing />
+      <StadiumRoof />
 
       <StadiumBackdrop />
 
       <StadiumAtmosphere />
 
-      {/* Game actors / camera */}
-
+      {/* Camera + actors */}
       {children}
     </>
+  );
+}
+
+/* =========================================================
+   WICKET
+========================================================= */
+
+function StadiumWicket({ position }: { position: [number, number, number] }) {
+  return (
+    <group position={position}>
+      {[-0.19, 0, 0.19].map((x) => (
+        <mesh key={x} position={[x, 0.66, 0]} castShadow>
+          <cylinderGeometry args={[0.045, 0.052, 1.32, 12]} />
+          <meshStandardMaterial color="#ead5a2" roughness={0.55} />
+        </mesh>
+      ))}
+
+      <mesh position={[-0.095, 1.33, 0]} castShadow>
+        <boxGeometry args={[0.22, 0.055, 0.07]} />
+        <meshStandardMaterial color="#f0dcae" roughness={0.5} />
+      </mesh>
+
+      <mesh position={[0.095, 1.33, 0]} castShadow>
+        <boxGeometry args={[0.22, 0.055, 0.07]} />
+        <meshStandardMaterial color="#f0dcae" roughness={0.5} />
+      </mesh>
+    </group>
   );
 }
 
@@ -488,10 +487,11 @@ export default function StadiumScene({ children }: StadiumSceneProps) {
     <div className="h-full w-full">
       <Canvas
         shadows
-        dpr={[1, 1.5]}
+        dpr={[1, 1.35]}
         gl={{
           antialias: true,
           powerPreference: "high-performance",
+          alpha: false,
         }}
         camera={{
           position: [4.6, 2.65, 6.9],
@@ -501,18 +501,12 @@ export default function StadiumScene({ children }: StadiumSceneProps) {
         }}
         onCreated={({ gl }) => {
           gl.outputColorSpace = THREE.SRGBColorSpace;
+
           gl.toneMapping = THREE.ACESFilmicToneMapping;
-          gl.toneMappingExposure = 1.2;
+
+          gl.toneMappingExposure = 1.35;
         }}
       >
-        <PerspectiveCamera
-          makeDefault
-          position={[4.6, 2.65, 6.9]}
-          fov={48}
-          near={0.1}
-          far={100}
-        />
-
         <StadiumContents>{children}</StadiumContents>
       </Canvas>
     </div>
